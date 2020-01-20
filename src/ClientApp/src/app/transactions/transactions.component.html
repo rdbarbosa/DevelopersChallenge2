@@ -1,0 +1,40 @@
+<h1>Transactions</h1>
+<p *ngIf="!transactions"><em>Loading...</em></p>
+<div class="container my-4">
+  <div class="col">
+    <input class="form-control form-control-sm mb-4" type="text" name="search" placeholder="Search" [(ngModel)]="filter">
+  </div>
+</div>
+<br/>
+<br/>
+<table class='table' *ngIf="transactions">
+  <thead>
+    <tr>
+      <th (click)="sort('date')">
+        Date
+        <span *ngIf="key =='date'"></span>
+      </th>
+      <th (click)="sort('type')">
+        Type
+        <span *ngIf="key =='type'"></span>
+      </th>
+      <th (click)="sort('amount')">
+        Amount
+        <span *ngIf="key =='amount'"></span>
+      </th>
+      <th (click)="sort('description')">
+        Description
+        <span *ngIf="key =='description'"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let transaction of transactions | orderBy: key : reverse |  filter:filter| paginate: { itemsPerPage: 20, currentPage: page }; let i = index">
+      <td>{{ transaction.date | date: 'short' }}</td>
+      <td>{{ transaction.type }}</td>
+      <td>{{ transaction.amount }}</td>
+      <td>{{ transaction.description }}</td>
+    </tr>
+  </tbody>
+  <pagination-controls class="pagination-custom" (pageChange)="page = $event"></pagination-controls>
+</table>
